@@ -40,9 +40,10 @@ use file::f::*;
 
 fn main() {
     let mut data = UsefulData::new();
-    data = manipulation::f::argument(&mut data);
     data.debug_log = "#! /usr/bin/env more\nxuars-computer-language\n\n".to_string();
     data.architecture = "x4c".to_string();
+
+    data = manipulation::f::argument(&mut data);
 
     data.debug_log = data.debug_log + "\nArchitecture: " + &data.architecture + "\n";
     let debug_file = std::fs::File::create("out.log");
