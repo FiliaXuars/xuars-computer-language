@@ -22,7 +22,6 @@
 //
 
 #[allow(dead_code)]
-#[ignore = "unused"]
 
 mod process;
 mod math;
@@ -31,12 +30,10 @@ mod useful_data;
 mod file;
 mod identification;
 mod manipulation;
+mod variables;
 
-use math::f::*;
 use process::f::*;
 use useful_data::f::UsefulData;
-
-use file::f::*;
 
 fn main() {
     let mut data = UsefulData::new();
@@ -49,7 +46,7 @@ fn main() {
     let debug_file = std::fs::File::create("out.log");
     if debug_file.is_ok()
     {
-        std::io::Write::write(&mut debug_file.unwrap(), &data.debug_log.as_bytes());
+        let _ = std::io::Write::write(&mut debug_file.unwrap(), &data.debug_log.as_bytes());
     }
     else
     {

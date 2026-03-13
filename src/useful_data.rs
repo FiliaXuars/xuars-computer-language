@@ -9,7 +9,7 @@ pub mod f
         pub architecture:   String,
         pub debug_log:      String,
         pub words:          Vec<String>,
-        pub variables:      Vec<String>
+        pub variables:      std::collections::HashMap<String, (String, String)>
     }
 
     impl UsefulData
@@ -24,7 +24,7 @@ pub mod f
                 architecture:   "".to_string(),
                 debug_log:      "".to_string(),
                 words:          vec![],
-                variables:      vec![]
+                variables:      std::collections::HashMap::new()
             }
         }
     }

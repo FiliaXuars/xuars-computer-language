@@ -175,7 +175,7 @@ pub mod f
                     }
                     else
                     {
-                        link_variables();
+                        crate::variables::f::link(data, word_arguments[iteration]);
                     }
                 }
             }
@@ -185,8 +185,4 @@ pub mod f
         data.clone()
     }
 
-    pub fn link_variables() -> u32
-    {
-        0
-    }
 }

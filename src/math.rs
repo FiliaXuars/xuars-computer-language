@@ -1,10 +1,8 @@
 #[allow(dead_code)]
 pub mod f
 {
-    use crate::UsefulData;
     pub fn base10tobase2(mut number: u32) -> String
     {
-        let mut iteration = 0;
         let mut value = "".to_string();
         while number >= 1
         {

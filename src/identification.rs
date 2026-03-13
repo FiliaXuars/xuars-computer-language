@@ -15,7 +15,6 @@ pub mod f
 
     pub fn statement(data: &mut UsefulData) -> (UsefulData, usize)
     {
-        let decided_type = false;
         let word_components_as_str: Vec<&str> = data.word.split(' ').collect();
         let mut word_components: Vec<String> = vec![];
         for word in word_components_as_str
@@ -25,12 +24,11 @@ pub mod f
 
         let mut done_searching = false;
         let mut iteration = 0;
-        let mut word_type = "ignored";
+        let mut word_type;
         while !done_searching
         {
             if iteration >= word_components.len()
             {
-                done_searching = true;
                 data.operator = "ignored".to_string();
                 return (data.clone(), 0)
             }

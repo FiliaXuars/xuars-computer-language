@@ -13,7 +13,7 @@ pub mod f
         for word in data.words.clone()
         {
             data.word = word.to_string();
-            let mut offset: usize;
+            let offset: usize;
             (*data, offset) = crate::identification::f::statement(data);
             if data.operator != "ignored" && data.operator != "comment"
             {
@@ -24,12 +24,12 @@ pub mod f
                 statement_counter += processed_statement.0;
                 if processed_statement.1 != "none"
                 {
-                    data.variables.push(processed_statement.1);
+                    data.variables.insert(processed_statement.1, (variable_counter.to_string(), "".to_string()));
                     variable_counter += 1;
                 }
                 if processed_statement.2.len() > 0
                 {
-                    let mut binary_value = processed_statement.2.clone().parse::<u32>();
+                    let binary_value = processed_statement.2.clone().parse::<u32>();
                     if binary_value.is_ok()
                     {
                         words_string =

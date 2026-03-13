@@ -1,7 +1,6 @@
 #[allow(dead_code)]
 pub mod f
 {
-    use crate::UsefulData;
     pub fn error(reason: &str, code: i32)
     {
         match reason
