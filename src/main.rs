@@ -24,12 +24,13 @@
 #[allow(dead_code)]
 #[ignore = "unused"]
 
-mod math;
-mod file;
 mod process;
+mod math;
+mod useful_data;
+
+mod file;
 mod identification;
 mod manipulation;
-mod useful_data;
 
 use math::f::*;
 use process::f::*;
@@ -39,55 +40,9 @@ use file::f::*;
 
 fn main() {
     let mut data = UsefulData::new();
+    data = manipulation::f::argument(&mut data);
     data.debug_log = "#! /usr/bin/env more\nxuars-computer-language\n\n".to_string();
     data.architecture = "x4c".to_string();
-    let args: Vec<String> = std::env::args().collect();
-    if args.len() < 2
-    {
-        error("usage", 1);
-    }
-    let mut program_name_ignored = false;
-    let mut type_flag = "argument";
-    for arg in &args
-    {
-        data.debug_log = "".to_string() + &data.debug_log + "\n" + arg;
-        match type_flag
-        {
-            "argument" =>
-            {
-                if program_name_ignored == true
-                {
-
-                    if arg.len() > 2 && arg.clone().chars().nth(1).unwrap() == '-'
-                    {
-                        match arg.clone().as_str()
-                        {
-                            "--arch"    => type_flag = "architecture",
-                            _                   => error("usage", 1)
-                        }
-                    }
-                    else
-                    {
-                        let file_string = std::fs::read_to_string(arg.as_str());
-                        if file_string.is_err()
-                        {
-                            error("invalid file", 1);
-                        }
-                        let file_string = file_string.unwrap();
-                        data = process(file_string, &mut data);
-                    }
-                }
-            },
-            "architecture" =>
-            {
-                data.architecture = arg.clone();
-                type_flag = "argument";
-            },
-            _ => error("oopsie", 1)
-
-        }
-        program_name_ignored = true;
-    }
 
     data.debug_log = data.debug_log + "\nArchitecture: " + &data.architecture + "\n";
     let debug_file = std::fs::File::create("out.log");
