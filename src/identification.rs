@@ -86,6 +86,16 @@ pub mod f
                     }
                 }
             }
+            if word_type == "array"
+            {
+                let name = crate::variables::f::array_extract(&word_components[iteration]);
+                for variable in 0..name.1
+                {
+                    let variable_name = crate::variables::f::array_extract(&word_components[iteration].replace(name.1.to_string().as_str(), variable.to_string().as_str()));
+                    data.variables.insert(variable_name.0, (data.variable_counter.to_string(), "0".to_string()));
+                    data.variable_counter = data.variable_counter + 1;
+                }
+            }
         }
         if word_type == "arithmatic"
         {

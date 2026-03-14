@@ -39,7 +39,7 @@ pub mod f
                                 error("invalid file", 1);
                             }
                             let file_string = file_string.unwrap();
-                            *data = crate::file::f::process(file_string, data);
+                            *data = crate::file::f::process(file_string, data, arg.clone());
                         }
                     }
                 },
@@ -86,20 +86,18 @@ pub mod f
         data.clone()
     }
 
-    pub fn statement(data: &mut UsefulData, start_offset: usize) -> (usize, String, String)
+    pub fn statement(data: &mut UsefulData, start_offset: usize) -> UsefulData
     {
         // should we add to <>?
-        let mut pc = 0;
-        let mut vars: String = "none".to_string();
         for _ in 0..3
         {
             data.words.push("0".to_string());
         }
-        let code: String = match data.operator.as_str()
+        let data = match data.operator.as_str()
         {
             "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
                 {
-                    pc = 1;
+                    data.statement_counter += 1;
                     data.word = 
                         "".to_string() + 
                         &data.words[start_offset] + " " + 
@@ -107,15 +105,47 @@ pub mod f
                         &data.words[start_offset+2] + " " + 
                         &data.words[start_offset+3];
                     *data = get_platform_code(data);
-                    data.operation.clone()
+                    data.clone()
 
                 },
-            "variable" => { vars = data.words[start_offset].to_string(); "".to_string() },
-            "array" => { vars = data.words[start_offset].to_string(); "".to_string() },
-            "function" => { vars = data.words[start_offset].to_string(); "".to_string() },
-            _ => { error(format!("invalid statement passed {}", data.operator).as_str(), 1); "".to_string() }
+            "variable" => 
+            { 
+                let variable_name = data.words[start_offset].to_string(); 
+                let variable_value;
+                if start_offset + 2 < data.words.len()
+                {
+                    if data.words[start_offset+1] != "is"
+                    {
+                        variable_value = "0".to_string();
+                    }
+                    else
+                    {
+                        variable_value = data.words[start_offset+2].clone();
+                    }
+                    data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), variable_value));
+                    data.variable_counter = data.variable_counter + 1;
+                }
+                data.clone()
+
+            },
+            "array" => 
+            { 
+                data.clone()
+            },
+            "function" => 
+            { 
+                let variable_name = data.words[start_offset].to_string(); 
+                data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), "0".to_string()));
+                data.variable_counter = data.variable_counter + 1;
+                data.clone()
+            },
+            _ => 
+            { 
+                error(format!("invalid statement passed {}", data.operator).as_str(), 1); 
+                data.clone()
+            }
         };
-        (pc, vars, code)
+        data.clone()
     }
 
     pub fn word_arguments(data: &mut UsefulData) -> UsefulData
@@ -175,7 +205,11 @@ pub mod f
                     }
                     else
                     {
-                        crate::variables::f::link(data, word_arguments[iteration]);
+                        if format_spec[iteration].0
+                        {
+                            let value = crate::variables::f::link(&mut data.clone(), word_arguments[iteration]);
+                            operation = operation + ((value & format_spec[iteration].2) << format_spec[iteration].1);
+                        }
                     }
                 }
             }

@@ -3,13 +3,16 @@ pub mod f
     #[derive(Debug, Clone)]
     pub struct UsefulData
     {
-        pub operator:       String,
-        pub operation:      String,
-        pub word:           String,
-        pub architecture:   String,
-        pub debug_log:      String,
-        pub words:          Vec<String>,
-        pub variables:      std::collections::HashMap<String, (String, String)>
+        pub operator:           String,
+        pub operation:          String,
+        pub word:               String,
+        pub architecture:       String,
+        pub debug_log:          String,
+        pub final_binary:       String,
+        pub words:              Vec<String>,
+        pub variables:          std::collections::HashMap<String, (String, String)>,
+        pub statement_counter:  usize,
+        pub variable_counter:    usize
     }
 
     impl UsefulData
@@ -18,13 +21,16 @@ pub mod f
         {
             UsefulData
             {
-                operator:       "".to_string(),
-                operation:      "".to_string(),
-                word:           "".to_string(),
-                architecture:   "".to_string(),
-                debug_log:      "".to_string(),
-                words:          vec![],
-                variables:      std::collections::HashMap::new()
+                operator:       	"".to_string(),
+                operation:      	"".to_string(),
+                word:           	"".to_string(),
+                architecture:       "".to_string(),
+                debug_log:          "".to_string(),
+                final_binary:       "".to_string(),
+                words:              vec![],
+                variables:          std::collections::HashMap::new(),
+                statement_counter:  0,
+                variable_counter:    0
             }
         }
     }
