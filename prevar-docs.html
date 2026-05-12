@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
 	<style>
 		.title
@@ -78,7 +79,7 @@
 <body>
 	<div class="centre title">
 	<h1 id="title" style="page-break-before: avoid"> Xuars-Computer-Language </h1>
-	<h3> or xcl for short</h3> <h2>by Filia! <3</h2>
+	<h3> or xcl for short</h3> <h2>by Filia! &lt;3</h2>
 	</div>
 	<br>
 
@@ -219,8 +220,8 @@
 			<dt>0x003ffbd7 = 1</dt>
 			<dt>			..</dt>
 			<dt>0x003ffbe0 = .</dt>
-			<dt>0x003ffbe1 = <</dt>
-			<dt>0x003ffbe2 = ></dt>
+			<dt>0x003ffbe1 = &lt;</dt>
+			<dt>0x003ffbe2 = &gt;</dt>
 			<dt>0x003ffbe3 = #</dt>
 			<dt>0x003ffbe4 = !</dt>
 			</dl>
@@ -251,8 +252,8 @@
 			<p> <code> me! is 3 </code> </p>
 			<p> <code> variable is me! </code> </p>
 			<p> <mark> not fully implemented! </mark></p>
-			<p> variable can be addressed using '&' </p>
-			<p> <code> kinda_works is &me! </code> </p>
+			<p> variable can be addressed using '&amp;' </p>
+			<p> <code> kinda_works is &amp;me! </code> </p>
 			<p> <mark> not implemented! </mark> </p>
 			<p> or offset using [number] </p>
 			<p> <code> unknown is kinda_works[1] </code> </p>
@@ -273,6 +274,7 @@
 			<dl>
 			<dt> ic7m:</dt><dd> noop, jumpu, jumpc, jumpp, take, place </dd>
 			<dt> i3c:</dt><dd> gthan, lthan, and, or, xor, nor, add, sub, shiftl, shiftr </dd>
+			</dl>
 			<br>
 		</div>
 	<h1 id="debug" style="page-break-before: avoid"> Debugging Features </h1>
@@ -291,7 +293,7 @@
 			placing a binary in the same directory as the vm starting with 0x and ending in .rom will cause the vm
 			to try to load the binary at the address mentioned
 			</p>
-			<p> <code> 0x&lthexadecimal address&gt.rom </code> </p>
+			<p> <code> 0x&lt;hexadecimal address&gt;.rom </code> </p>
 		</div>
 	<h1 id="variables"> Variables </h1>
 		<div class="indent">
@@ -301,7 +303,7 @@
 			<p> <code>variable2 is 17</code></p>
 			<br>
 			<p> <code>take 0 variable1</code></p>
-			<p> <code>place 0 &variable2</code></p>
+			<p> <code>place 0 &amp;variable2</code></p>
 			
 			<p>0x10.rom(<code> 00 00 11 01 00 00 11 00 </code>)</p>
 			<p>this would take our variable(00 00 11 01) to buffer[0]</p>
@@ -318,7 +320,7 @@
 			function would be at and place a noop in its place
 			</p>
 		</div>
+	<footer>
+		&lt;3 Thanks for reading!
+	</footer>
 </body>
-<footer>
-	<3 Thanks for reading!
-</footer>
