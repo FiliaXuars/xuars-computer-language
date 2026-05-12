@@ -1,0 +1,326 @@
+<head>
+	<style>
+		.title
+		{
+			padding: 8vh;
+			background-color: #00000030
+		}
+		body
+		{
+			font-family: arial;
+		}
+		.centre
+		{
+			text-align: center;
+		}
+		h1
+		{
+			page-break-before: always;
+		}
+		h3
+		{
+			padding-left: 2vw;
+		}
+		h4
+		{
+			padding-left: 3vw;
+		}
+		.indent > p
+		{
+			padding-left: 5vw;
+		}
+		.indent > a > h2
+		{
+			padding-left: 5vw;
+		}
+		dt
+		{
+			padding-left: 5vw;
+		}
+		dd
+		{
+			padding-left: 6vw;
+		}
+		dl > p
+		{
+			padding-left: 4vw;
+		}
+		code
+		{
+			background-color: #00000020;
+			padding: 0.3vw;
+		}
+		.top_button
+		{
+			position: fixed;
+			left: 80vw;
+			top: 90vh;
+			width: 20vw;
+		}
+		footer
+		{
+			padding: 10vh;
+		}
+		@media print
+		{
+			a
+			{
+				color: black;
+			}
+			.top_button
+			{
+				left: -100vw;
+			}
+		}
+	</style>
+
+</head>
+<body>
+	<div class="centre title">
+	<h1 id="title" style="page-break-before: avoid"> Xuars-Computer-Language </h1>
+	<h3> or xcl for short</h3> <h2>by Filia! <3</h2>
+	</div>
+	<br>
+
+	<div class="top_button">
+		<a href="#contents">Return to Contents ⮝ </a>
+	</div>
+	<h1 id="contents"> Contents </h1>
+	<div class="indent">
+	<a href="#architecture"> <h2> x4c's architecture </h2> </a>
+	
+	<a href="#syntax"> <h2> Syntax </h2> </a>
+	<a href="#commands"> <h2> Commands </h2> </a>
+	
+	<a href="#debug"> <h2> Debugging Features </h2> </a>
+	<a href="#compiler"> <h2> Compiler Options </h2> </a>
+	<a href="#rom"> <h2> Rom loading </h2> </a>
+	
+	<h3><mark> the following are incomplete features of xcl </mark></h3>
+	<a href="#variables"> <h2> Variables </h2> </a>
+	<a href="#arrays"> <h2> Arrays </h2> </a>
+	<a href="#functions"> <h2> Functions </h2> </a>
+	<br>
+	</div>
+	<h1 id="architecture"> x4c's architecture </h1>
+		<h3>memory size </h3>
+		<div class="indent">
+			<p>each word is 32b</p>
+			<p>the first 4 bits are the instruction opcode</p>
+			<p>in the ic7m format:  </p>
+			<p>the next 2 bit reference the "buffer" or cpu register used in the operation</p>
+			<p>and the last 26 bits reference the address</p>
+			<p><code>icmmmmmmm</code></p>
+			<p><code>a3002a1b0</code></p>
+			<br>
+			<p> the other format used is i3c format in this format: </p>
+			<p> the next 6 bits split into three parts are used to reference three cpu buffers. </p>
+			<p><code>iccc</code></p>
+			<p><code>a1e3</code></p>
+			<br>
+			<p> the total size of memory is 8MiB or 2,097,152 words</p>
+			<br>
+		</div>
+		<h3> buffers </h3>
+		<div class="indent">
+			<p> 
+				there are 4 cpu buffer's(registers) accessable.  all buffers(0,1,2,3) are general purpose <b>however</b> 
+				buffer 3 will contain a callback address whenever a jump command is used
+			<p>
+		</div>
+		<h3> instructions </h3>
+		<div class="indent">
+			<p>i = instruction </p>
+			<p>c = cpu buffer </p>
+			<p>m = memory address </p>
+			<dl>
+				<dt><h4> 0 noop </h4></dt>
+				<dd> increments program counter </dd>
+				<dt><h4> 1 jumpu </h4></dt>
+				<dd> sets buffer[3] to current address, jumps to m </dd>
+				<dt><h4> 2 jumpc </h4></dt>
+				<dd> sets buffer[3] to current address, m jumps to m if c = 0xffffffff </dd>
+				<dt><h4> 3 jumpp </h4></dt>
+				<dd> sets buffer[3] to current address, jumps to c </dd>
+				<p><mark>the following all increment program counter after the instruction</mark></p>
+				<dt><h4> 4 take </h4></dt>
+				<dd> sets the dereference of c to m</dd>
+				<dt><h4> 5 place </h4></dt>
+				<dd> 
+					<p> sets m to the <b>dereference of</b> the dereference of c(double expanding) equivalent to [var[var]]</p>
+				</dd>
+				<dt><h4> 6 gthan </h4></dt>
+				<dd>
+					if c[0] is greater than c[1] then c[2] will be set to 0xffffffff, otherwise it will be set to 0x0
+				</dd>
+				<dt><h4> 7 lthan </h4></dt>
+				<dd>
+					if c[0] is less than c[1] then c[2] will be set to 0xffffffff, otherwise it will be set to 0x0
+				</dd>
+				<dt><h4> 8 and </h4></dt>
+				<dd>
+					performs a bitwise and on c[0] and c[1] then stores the result in c[2]
+				</dd>
+				<dt><h4> 9 or </h4></dt>
+				<dd>
+					performs a bitwise or on c[0] and c[1] then stores the result in c[2]
+				</dd>
+				<dt><h4> 10 xor </h4></dt>
+				<dd>
+					performs a bitwise xor on c[0] and c[1] then stores the result in c[2]
+				</dd>
+				<dt><h4> 11 nor </h4></dt>
+				<dd>
+					performs a bitwise nor on c[0] and c[1] then stores the result in c[2]
+				</dd>
+				<dt><h4> 12 add </h4></dt>
+				<dd>
+					performs an addition operation on c[0] and c[1] then stores the result in c[2]
+				</dd>
+				<dt><h4> 13 sub </h4></dt>
+				<dd>
+					performs a subtraction operation on c[0] and c[1] then stores the result in c[2]
+				</dd>
+				<dt><h4> 14 shiftl </h4></dt>
+				<dd>
+					shifts c[0] left by c[1] voiding overflow and storing the result in c[2]
+				</dd>
+				<dt><h4> 15 shiftr </h4></dt>
+				<dd>
+					shifts c[0] right by c[1] voiding overflow and storing the result in c[2]
+				</dd>
+			</dl>
+		</div>
+		<h3> vram offset and size </h3>
+		<div class="indent">
+			<p>
+			the vram begins at 0x03ffc000(67092480)
+			and continues for 0x4000(128*128) pixels
+			ending at 0x04000000(67108864)
+			</p>
+		</div>
+		<h3> input offset </h3>
+		<div class="indent">
+			<p>
+			input byte is set at 0x003ffbbb
+			and will be updated when a new to character is pressed
+			</p>
+		</div>
+		<h3> character table offset </h3>
+		<div class="indent">
+			<p>
+			<dl>
+			<dt>0x003ffbbc = a</dt>
+			<dt>0x003ffbbd = b</dt>
+			<dt>0x003ffbbe = c</dt>
+			<dt>			..</dt>
+			<dt>0x003ffbd5 = z</dt>
+			<dt>0x003ffbd6 = 0</dt>
+			<dt>0x003ffbd7 = 1</dt>
+			<dt>			..</dt>
+			<dt>0x003ffbe0 = .</dt>
+			<dt>0x003ffbe1 = <</dt>
+			<dt>0x003ffbe2 = ></dt>
+			<dt>0x003ffbe3 = #</dt>
+			<dt>0x003ffbe4 = !</dt>
+			</dl>
+			</p>
+		</div>
+	<h1 id="syntax"> Syntax </h1>
+	<h3> Goal of the syntax </h3>
+		<div class="indent">
+		<p> to minimise the use of symbolic characters in favour of words </p>
+		</div>
+	<h3> Comments </h3>
+		<div class="indent">
+			<p> <code># this is a comment</code>
+		</div>
+	<h3> Statements </h3>
+		<div class="indent">
+			<p>statements come in two formats ic7m and i3c</p>
+			<dl>
+				<dt> ic7m format: </dt>
+				<dd> <code> take 2 124 </code> </dd>
+				<dt> i3c format: </dt>
+				<dd> <code> 1 and 3 2 </code> </dd>
+			</dl>
+			<p> <mark> in the current build(prevar) only integers are supported </mark> </p>
+		</div>
+	<h3> Variables </h3>
+		<div class="indent">
+			<p> <code> me! is 3 </code> </p>
+			<p> <code> variable is me! </code> </p>
+			<br>
+			<p> <mark> not fully implemented! </mark></p>
+			<p> variable can be addressed using '&' </p>
+			<p> <code> kinda_works is &me! </code> </p>
+			<p> <mark> not implemented! </mark> </p>
+			<p> or offset using [number] </p>
+			<p> <code> unknown is kinda_works[1] </code> </p>
+		</div>
+	<h3> Arrays </h3>
+		<div class="indent">
+			<p> <mark> not implemented! </mark> </p>
+			<p> 'variable[number]' can be used to create many variables at once </p>
+		</div>
+	<h3> Functions </h3>
+		<div class="indent">
+			<p> <mark> not fully implemented! </mark> </p>
+			<p> 'variable()' can be used to create a function although currently functions and variables are quite similar </p>
+		</div>
+	<h1 id="commands"> Commands </h1>
+		<div class="indent">
+			<p> regardless of architecture all commands immitate x4c's capability so available keywords are</p>
+			<dl>
+			<dt> ic7m:</dt><dd> noop, jumpu, jumpc, jumpp, take, place </dd>
+			<dt> i3c:</dt><dd> gthan, lthan, and, or, xor, nor, add, sub, shiftl, shiftr </dd>
+			<br>
+		</div>
+	<h1 id="debug"> Debugging Features </h1>
+		<div class="indent">
+			<p> pressing f5 while running x4c vm will tell the vm to dump its memory to a file </p>
+			<p><mark> not implemented! </mark></p>
+			<p> DEBUG flag </p>
+		</div>
+	<h1 id="compiler"> Compiler Options </h1>
+		<div class="indent">
+			<p> "--arch" can be used to specify an architecture (only supports x4c atm)</p>
+		</div>
+	<h1 id="debug"> on ROM loading </h1>
+		<div class="indent">
+			<p>
+			placing a binary in the same directory as the vm starting with 0x and ending in .rom will cause the vm
+			to try to load the binary at the address mentioned
+			</p>
+			<p> <code> 0x&lthexadecimal address&gt.rom </code> </p>
+		</div>
+	<h1 id="variables"> Variables </h1>
+		<div class="indent">
+			<p> 
+			for prevar build i recommend creating your own data rom containing your variables and use &variable to point to 
+			the location of your variables </p>
+			<p> <code>variable1 is 16</code></p>
+			<p> <code>variable2 is 17</code></p>
+			<br>
+			<p> <code>take 0 &variable1</code></p>
+			</code> </p>
+			<p>0x10.rom(<code> 00 00 11 01 00 00 11 00 </code>)</p>
+			<p>
+			this would take our variable(00 00 11 01) to buffer[0]
+			</p>
+		</div>
+	<h2 id="arrays" style="text-indent: 1vw"> Arrays </h2>
+		<div class="indent">
+			<p> if you really want an array i would suggest making a rom file specifically for your array </p>
+		</div>
+	<h2 id="functions" style="text-indent: 1vw"> Functions </h2>
+		<div class="indent">
+			<p> 
+			functions without arguments "kinda work" or more accurately basically don't work for now count which address your 
+			function would be at and place a noop in its place
+			</p>
+		</div>
+</body>
+<footer>
+	<3 Thanks for reading!
+</footer>
