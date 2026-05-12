@@ -297,17 +297,16 @@
 	<h1 id="variables"> Variables </h1>
 		<div class="indent">
 			<p> 
-			for prevar build i recommend creating your own data rom containing your variables and use &variable to point to 
-			the location of your variables </p>
+			for prevar build i recommend creating your own data rom containing your variables </p>
 			<p> <code>variable1 is 16</code></p>
 			<p> <code>variable2 is 17</code></p>
 			<br>
-			<p> <code>take 0 &variable1</code></p>
-			</code> </p>
+			<p> <code>take 0 variable1</code></p>
+			<p> <code>place 0 &variable2</code></p>
+			
 			<p>0x10.rom(<code> 00 00 11 01 00 00 11 00 </code>)</p>
-			<p>
-			this would take our variable(00 00 11 01) to buffer[0]
-			</p>
+			<p>this would take our variable(00 00 11 01) to buffer[0]</p>
+			<p>and place buffer[0] to 12(00 00 11 00)</p>
 		</div>
 	<h2 id="arrays" style="text-indent: 1vw"> Arrays </h2>
 		<div class="indent">
