@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <head>
 	<style>
+		html
+		{
+			margin: 15px;
+		}
 		@font-face
 		{
 			font-family: 'brimaregular';
@@ -95,8 +99,14 @@
 		}
 		@media print
 		{
+			button
+			{
+				position: fixed;
+				left: -100vw;
+			}
 			a
 			{
+				text-decoration: none;
 				color: black;
 			}
 			.top_button
