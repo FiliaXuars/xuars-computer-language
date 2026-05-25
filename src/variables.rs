@@ -46,7 +46,7 @@ pub mod f
     pub fn link(data: &mut UsefulData, operand: &str) -> u32
     {
         let value: u32;
-        if (operand.chars().nth(0) == Some('&')) | (data.operator == "function")
+        if (operand.chars().nth(0) == Some('&')) || (data.operator == "function")
         {
             value = get(data, operand.replace("&", "").as_str(), 0);
         }
@@ -55,7 +55,7 @@ pub mod f
             value = get(data, operand, 1);
         }
         value
-    } 
+    }
     
     pub fn append_data_address( data: &mut UsefulData ) -> UsefulData
     {

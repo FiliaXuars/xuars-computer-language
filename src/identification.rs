@@ -45,6 +45,7 @@ pub mod f
         word_type = match word_components[iteration].as_str()
         {
             "#"     => "comment",
+			"noop"	=> "noop",
             "jumpu" => "jumpu",
             "jumpc" => "jumpc",
             "jumpp" => "jumpp",
@@ -112,6 +113,8 @@ pub mod f
                     "add"   => "add",
                     "sub"   => "sub",
                     "sll"   => "sll",
+					"shiftl" => "sll",
+					"shiftr" => "srl",
                     "srl"   => "srl",
                     _       => "ignored"
                 };

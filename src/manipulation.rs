@@ -28,7 +28,7 @@ pub mod f
                             match arg.clone().as_str()
                             {
                                 "--arch"    => type_flag = "architecture",
-                                _                   => error("usage", 1)
+                                _           => error("usage", 1)
                             }
                         }
                         else
@@ -95,7 +95,7 @@ pub mod f
         }
         let data = match data.operator.as_str()
         {
-            "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
+            "noop" | "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
                 {
                     data.statement_counter += 1;
                     data.word = 
