@@ -20,7 +20,7 @@ pub mod f
 
                 match data.operator.as_str()
                 {
-                    "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
+                    "noop" | "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
                     {
                         let binary_value = data.operation.clone().parse::<u32>();
                         if binary_value.is_ok()
