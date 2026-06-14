@@ -24,7 +24,6 @@ pub mod f
 			"set",
 			"to",
 			"do",
-			"and",
 			"store",
 			"at",
 			"	",
