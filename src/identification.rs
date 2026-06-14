@@ -15,9 +15,35 @@ pub mod f
 
     pub fn statement(data: &mut UsefulData) -> (UsefulData, usize)
     {
-        let word_components_as_str: Vec<&str> = data.word.split(' ').collect();
+		let ignored_keys = 
+		[
+			"is",
+			"then",
+			"do",
+			"if",
+			"set",
+			"to",
+			"do",
+			"and",
+			"store",
+			"at",
+			"	",
+			" ",
+			"",
+		];
+		let filtered_statement_parts: Vec<&str> = data.word.split(' ').collect();
+		let mut filtered_statement: String = "".to_string();
+		for part in 0..filtered_statement_parts.len()
+		{
+			filtered_statement = filtered_statement + "\t" + filtered_statement_parts[part];
+		}
+		let mut filtered_statement_parts: Vec<&str> = filtered_statement.split('\t').collect();
+		for key in 0..ignored_keys.len()
+		{
+			let _: Vec<&str> = filtered_statement_parts.extract_if(.., |word| (word == &ignored_keys[key]) == true).collect();
+		}
         let mut word_components: Vec<String> = vec![];
-        for word in word_components_as_str
+        for word in filtered_statement_parts
         {
             word_components.push(word.to_string());
         }

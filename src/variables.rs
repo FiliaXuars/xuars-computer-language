@@ -74,5 +74,24 @@ pub mod f
         }
         data.clone()
     }
-    
+ 
+	pub fn place(data: &mut UsefulData) -> UsefulData
+	{
+		let final_binary = data.final_binary.clone();
+		let mut binary: Vec<&str> = final_binary.split(' ').collect();
+		for _ in 0..data.variables.len()
+		{
+			binary.push("");
+		}
+		for variable in &data.variables
+		{
+			binary[variable.1.0.parse::<usize>().expect("uhhhhh that's not right")] = variable.1.1.as_str();
+		}
+		data.final_binary = "".to_string();
+		for word in 0..binary.len()
+		{
+			data.final_binary += &(" ".to_string() + binary[word]);
+		}
+		data.clone()
+	}
 }

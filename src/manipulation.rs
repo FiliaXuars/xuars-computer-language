@@ -86,7 +86,7 @@ pub mod f
         data.clone()
     }
 
-    pub fn statement(data: &mut UsefulData, start_offset: usize) -> UsefulData
+    pub fn statement(data: &mut UsefulData, start_offset: usize, variables: bool) -> UsefulData
     {
         // should we add to <>?
         for _ in 0..3
@@ -97,46 +97,55 @@ pub mod f
         {
             "noop" | "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
                 {
-                    data.statement_counter += 1;
-                    data.word = 
-                        "".to_string() + 
-                        &data.words[start_offset] + " " + 
-                        &data.words[start_offset+1] + " " + 
-                        &data.words[start_offset+2] + " " + 
-                        &data.words[start_offset+3];
-                    *data = get_platform_code(data);
-                    data.clone()
-
+					if variables == false
+					{
+						data.statement_counter += 1;
+						data.word = 
+							"".to_string() + 
+							&data.words[start_offset] + " " + 
+							&data.words[start_offset+1] + " " + 
+							&data.words[start_offset+2] + " " + 
+							&data.words[start_offset+3];
+						*data = get_platform_code(data);
+					}
+					else
+					{
+						data.statement_counter += 1;
+					}
+					data.clone()
                 },
             "variable" => 
             { 
-                let variable_name = data.words[start_offset].to_string(); 
-                let variable_value;
-                if start_offset + 2 < data.words.len()
-                {
-                    if data.words[start_offset+1] != "is"
-                    {
-                        variable_value = "0".to_string();
-                    }
-                    else
-                    {
-                        variable_value = data.words[start_offset+2].clone();
-                    }
-                    data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), variable_value));
-                    data.variable_counter = data.variable_counter + 1;
-                }
+				if variables == true
+				{
+					let variable_name = data.words[start_offset].to_string(); 
+					let variable_value;
+					if start_offset + 2 < data.words.len()
+					{
+						variable_value = data.words[start_offset+1].clone();
+						data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), variable_value));
+						data.variable_counter = data.variable_counter + 1;
+					}
+				}
                 data.clone()
 
             },
             "array" => 
             { 
+				if variables == true
+				{
+
+				}
                 data.clone()
             },
             "function" => 
             { 
-                let variable_name = data.words[start_offset].to_string(); 
-                data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), "0".to_string()));
-                data.variable_counter = data.variable_counter + 1;
+				if variables == true
+				{
+					let variable_name = data.words[start_offset].to_string(); 
+					data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), "0".to_string()));
+					data.variable_counter = data.variable_counter + 1;
+				}
                 data.clone()
             },
             _ => 

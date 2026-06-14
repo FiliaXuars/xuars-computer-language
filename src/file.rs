@@ -14,9 +14,21 @@ pub mod f
             (*data, offset) = crate::identification::f::statement(data);
             if data.operator != "ignored" && data.operator != "comment"
             {
+                *data = crate::manipulation::f::statement(data, offset, true);
+            }
+        }
+        *data = crate::variables::f::append_data_address(data);
+		data.statement_counter = 0;
+		data.words = crate::identification::f::words(&file);
+		for word in data.words.clone()
+		{
+			data.word = word.to_string();
+            let offset: usize;
+            (*data, offset) = crate::identification::f::statement(data);
+            if data.operator != "ignored" && data.operator != "comment"
+            {
                 words_string = words_string + "\n\n    " + &data.word + " ;; identified as \"" + &data.operator + "\"";
-                // vars arch 012
-                *data = crate::manipulation::f::statement(data, offset);
+                *data = crate::manipulation::f::statement(data, offset, false);
 
                 match data.operator.as_str()
                 {
@@ -39,8 +51,10 @@ pub mod f
                     _ => ()
                 }
             }
-        }
-        *data = crate::variables::f::append_data_address(data);
+
+		}
+
+		*data = crate::variables::f::place(data);
         data.debug_log = format!(
 "{}
 
