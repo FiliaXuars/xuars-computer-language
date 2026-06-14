@@ -60,6 +60,18 @@ pub mod f
     pub fn append_data_address( data: &mut UsefulData ) -> UsefulData
     {
         let data_address: u32 = ((data.statement_counter + 1) & 0xffffffff) as u32;
+		let data_offset_variable: Option<&(String, String)> = data.variables.get("@data");
+		let data_offset: u32;
+		if data_offset_variable.is_some()
+		{
+			let data_offset_variable = data_offset_variable.unwrap();
+			data_offset = data_offset_variable.1.parse::<u32>().expect("this never fails");
+		}
+		else
+		{
+			data_offset = 0;
+		}
+		data.data_offset = crate::math::f::into_hex(data_offset);
         for variable in data.variables.clone()
         {
             let original_address = variable.1.0.parse::<u32>();
@@ -67,7 +79,7 @@ pub mod f
             {
                 let key = variable.0;
                 let value = variable.1.1;
-                let address = original_address.unwrap() + data_address;
+                let address = original_address.unwrap() + data_address + data_offset - 1;
                 data.variables.remove_entry(&key);
                 data.variables.insert(key, (address.to_string(), value));
             }
@@ -85,7 +97,7 @@ pub mod f
 		}
 		for variable in &data.variables
 		{
-			binary[variable.1.0.parse::<usize>().expect("uhhhhh that's not right")] = variable.1.1.as_str();
+			binary[variable.1.0.parse::<usize>().expect("uhhhhh that's not right") - usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail")] = variable.1.1.as_str();
 		}
 		data.final_binary = "".to_string();
 		for word in 0..binary.len()

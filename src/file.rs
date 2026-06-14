@@ -3,7 +3,7 @@ pub mod f
 {
     use crate::UsefulData;
 
-    pub fn process( file: String, data: &mut UsefulData, filename: String ) -> UsefulData
+    pub fn process( file: String, data: &mut UsefulData, _filename: String ) -> UsefulData
     {
         let mut words_string = "".to_string();
         data.words = crate::identification::f::words(&file);
@@ -74,8 +74,7 @@ Words:
             data.debug_log,
             data.variables
         );
-
-        let out_file = std::fs::File::create(filename + ".bin");
+        let out_file = std::fs::File::create("0x".to_string() + &data.data_offset + ".rom");
         if out_file.is_ok()
         {
             let mut final_binary_u8: Vec<u8> = vec![];

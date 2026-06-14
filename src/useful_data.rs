@@ -11,8 +11,9 @@ pub mod f
         pub final_binary:       String,
         pub words:              Vec<String>,
         pub variables:          std::collections::HashMap<String, (String, String)>,
+		pub data_offset:		String,
         pub statement_counter:  usize,
-        pub variable_counter:    usize
+        pub variable_counter:   usize
     }
 
     impl UsefulData
@@ -29,8 +30,9 @@ pub mod f
                 final_binary:       "".to_string(),
                 words:              vec![],
                 variables:          std::collections::HashMap::new(),
+				data_offset:		"".to_string(),
                 statement_counter:  0,
-                variable_counter:    0
+                variable_counter:   0
             }
         }
     }

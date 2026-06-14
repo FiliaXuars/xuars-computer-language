@@ -140,10 +140,10 @@ pub mod f
             },
             "function" => 
             { 
-				if variables == true
+				if variables == false
 				{
 					let variable_name = data.words[start_offset].to_string(); 
-					data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), "0".to_string()));
+					data.variables.insert(variable_name, (data.clone().statement_counter.to_string(), data.clone().statement_counter.to_string()));
 					data.variable_counter = data.variable_counter + 1;
 				}
                 data.clone()
