@@ -79,7 +79,7 @@ pub mod f
             {
                 let key = variable.0;
                 let value = variable.1.1;
-                let address = original_address.unwrap() + data_address + data_offset - 1;
+                let address = original_address.unwrap() + data_address + data_offset;
                 data.variables.remove_entry(&key);
                 data.variables.insert(key, (address.to_string(), value));
             }
