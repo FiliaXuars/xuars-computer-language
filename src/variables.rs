@@ -74,12 +74,12 @@ pub mod f
 		data.data_offset = crate::math::f::into_hex(data_offset);
         for variable in data.variables.clone()
         {
-            let original_address = variable.1.0.parse::<u32>();
+		let original_address = variable.1.0.parse::<u32>();
             if original_address.is_ok()
             {
                 let key = variable.0;
                 let value = variable.1.1;
-                let address = original_address.unwrap() + data_address + data_offset;
+                let address = original_address.unwrap() + data_address + data_offset - 1;
                 data.variables.remove_entry(&key);
                 data.variables.insert(key, (address.to_string(), value));
             }
@@ -97,10 +97,10 @@ pub mod f
 		}
 		for variable in &data.variables
 		{
-			let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") - usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail") + 1;
+			let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") + usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail");
 			if index < binary.len()
 			{
-				binary[index] = variable.1.1.as_str();
+				binary[index + 1] = variable.1.1.as_str();
 			}
 		}
 		data.final_binary = "".to_string();

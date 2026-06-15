@@ -86,7 +86,7 @@ pub mod f
         data.clone()
     }
 
-    pub fn statement(data: &mut UsefulData, start_offset: usize, variables: bool) -> UsefulData
+    pub fn statement(data: &mut UsefulData, start_offset: usize, pass: &str) -> UsefulData
     {
         // should we add to <>?
         for _ in 0..3
@@ -97,7 +97,7 @@ pub mod f
         {
             "noop" | "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
                 {
-					if variables == false
+					if pass == "main"
 					{
 						data.statement_counter += 1;
 						data.word = 
@@ -116,7 +116,7 @@ pub mod f
                 },
             "variable" => 
             { 
-				if variables == true
+				if pass == "variables"
 				{
 					let variable_name = data.words[start_offset].to_string(); 
 					let variable_value;
@@ -132,7 +132,7 @@ pub mod f
             },
             "array" => 
             { 
-				if variables == true
+				if pass == "variables"
 				{
 
 				}
@@ -140,11 +140,11 @@ pub mod f
             },
             "function" => 
             { 
-				if variables == false
+				if pass == "functions"
 				{
 					let variable_name = data.words[start_offset].to_string(); 
 					data.variables.insert(variable_name, (data.clone().statement_counter.to_string(), data.clone().statement_counter.to_string()));
-					data.variable_counter = data.variable_counter + 1;
+					//data.variable_counter = data.variable_counter + 1;
 				}
                 data.clone()
             },
