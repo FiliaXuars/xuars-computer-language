@@ -97,7 +97,7 @@ pub mod f
 		}
 		for variable in &data.variables
 		{
-			let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") - usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail");
+			let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") - usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail") + 1;
 			if index < binary.len()
 			{
 				binary[index] = variable.1.1.as_str();
