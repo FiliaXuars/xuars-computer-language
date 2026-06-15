@@ -6,7 +6,21 @@ pub mod f
     pub fn process( file: String, data: &mut UsefulData, _filename: String ) -> UsefulData
     {
         let mut words_string = "".to_string();
-        
+ 
+		data.words = crate::identification::f::words(&file);
+        for word in data.words.clone()
+        {
+            data.word = word.to_string();
+            let offset: usize;
+            (*data, offset) = crate::identification::f::statement(data);
+            if data.operator != "ignored" && data.operator != "comment"
+            {
+                *data = crate::manipulation::f::statement(data, offset, "size");
+            }
+        }
+
+ 		
+		data.statement_counter = 0;
 		data.words = crate::identification::f::words(&file);
         for word in data.words.clone()
         {

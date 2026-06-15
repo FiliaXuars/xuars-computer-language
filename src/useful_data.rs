@@ -10,7 +10,7 @@ pub mod f
         pub debug_log:          String,
         pub final_binary:       String,
         pub words:              Vec<String>,
-        pub variables:          std::collections::HashMap<String, (String, String)>,
+        pub variables:          std::collections::HashMap<String, (String, String, String)>,
 		pub data_offset:		String,
         pub statement_counter:  usize,
         pub variable_counter:   usize

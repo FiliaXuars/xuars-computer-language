@@ -120,10 +120,10 @@ pub mod f
 				{
 					let variable_name = data.words[start_offset].to_string(); 
 					let variable_value;
-					if start_offset + 2 < data.words.len()
+					if start_offset + 1 < data.words.len()
 					{
 						variable_value = data.words[start_offset+1].clone();
-						data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), variable_value));
+						data.variables.insert(variable_name, (data.clone().variable_counter.to_string(), variable_value, "variable".to_string()));
 						data.variable_counter = data.variable_counter + 1;
 					}
 				}
@@ -143,8 +143,9 @@ pub mod f
 				if pass == "functions"
 				{
 					let variable_name = data.words[start_offset].to_string(); 
-					data.variables.insert(variable_name, (data.clone().statement_counter.to_string(), data.clone().statement_counter.to_string()));
+					data.variables.insert(variable_name, (data.clone().statement_counter.to_string(), data.clone().statement_counter.to_string(), "function".to_string()));
 					//data.variable_counter = data.variable_counter + 1;
+					//data.statement_counter = data.statement_counter + 1;
 				}
                 data.clone()
             },

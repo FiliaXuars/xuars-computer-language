@@ -59,8 +59,8 @@ pub mod f
     
     pub fn append_data_address( data: &mut UsefulData ) -> UsefulData
     {
-        let data_address: u32 = ((data.statement_counter + 1) & 0xffffffff) as u32;
-		let data_offset_variable: Option<&(String, String)> = data.variables.get("@data");
+        let data_address: u32 = ((data.statement_counter) & 0xffffffff) as u32;
+		let data_offset_variable: Option<&(String, String, String)> = data.variables.get("@data");
 		let data_offset: u32;
 		if data_offset_variable.is_some()
 		{
@@ -77,12 +77,26 @@ pub mod f
 		let original_address = variable.1.0.parse::<u32>();
             if original_address.is_ok()
             {
+				let original_address = original_address.unwrap();
                 let key = variable.0;
                 let value = variable.1.1;
-                let address = original_address.unwrap() + data_address + data_offset - 1;
+				let var_type = variable.1.2;
+                let address = original_address + data_address + data_offset;
                 data.variables.remove_entry(&key);
-                data.variables.insert(key, (address.to_string(), value));
+				if var_type != "function"
+				{
+                	data.variables.insert(key, (address.to_string(), value, var_type));
+				}
+				else
+				{
+					let address = address - data_address;
+					data.variables.insert(key, (address.to_string(), address.to_string(), var_type));
+				}
             }
+			else
+			{
+				println!("failed to parse {:?}", variable);
+			}
         }
         data.clone()
     }
@@ -97,10 +111,14 @@ pub mod f
 		}
 		for variable in &data.variables
 		{
-			let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") + usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail");
-			if index < binary.len()
+			if variable.1.2 == "variable"
 			{
-				binary[index + 1] = variable.1.1.as_str();
+				let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") - usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail") + 1;
+				if index > binary.len()
+				{
+					error(&format!("compiler (variable addressing)\n\n {:?} \n{index}", data.variables), 1)
+				}
+				binary[index] = variable.1.1.as_str();
 			}
 		}
 		data.final_binary = "".to_string();
