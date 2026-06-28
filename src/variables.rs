@@ -114,9 +114,9 @@ pub mod f
 			if variable.1.2 == "variable"
 			{
 				let index = variable.1.0.parse::<usize>().expect("uhhhhh that's not right") - usize::from_str_radix(&data.data_offset, 16).expect("shouldn't ever fail") + 1;
-				if index > binary.len()
+				if index > binary.len() -1 
 				{
-					error(&format!("compiler (variable addressing)\n\n {:?} \n{index}", data.variables), 1)
+					error(&format!("compiler (variable addressing) {index}\n\n {:?} \n", data.variables), 1)
 				}
 				binary[index] = variable.1.1.as_str();
 			}

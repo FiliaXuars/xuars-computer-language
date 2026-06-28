@@ -59,7 +59,7 @@ pub mod f
     pub fn get_platform_code(data: &mut UsefulData) -> UsefulData
     {
         let mut operations: std::collections::HashMap<&str, usize> = std::collections::HashMap::new();
-        let opcode_keys: [&str; 16] = ["noop", "jumpu", "jumpc", "jumpp", "take", "place", "gthan", "lthan", "and", "or", "xor", "nor", "add", "sub", "sll", "srl"];
+        let opcode_keys: [&str; 16] = ["noop", "jumpu", "jumpc", "jumpp", "take", "place", "gthan", "lthan", "and", "or", "xor", "nor", "add", "sub", "div", "mul"];
         let opcode_value: [usize; 16] = match data.architecture.as_str()
         {
             "x4c" | "x4cb" =>
@@ -95,7 +95,7 @@ pub mod f
         }
         let data = match data.operator.as_str()
         {
-            "noop" | "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl"  =>
+            "noop" | "jumpu" | "jumpc" | "jumpp" | "take" | "place" | "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "div" | "mul"  =>
                 {
 					if pass == "main"
 					{
@@ -178,7 +178,7 @@ pub mod f
                             instruction_format = "icmmmmmm";
                         }
                     },
-                    "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "sll" | "srl" =>
+                    "gthan" | "lthan" | "and" | "or" | "xor" | "nor" | "add" | "sub" | "div" | "mul" =>
                     {
                         word_arguments[0] = word_components[0];
                         word_arguments[1] = word_components[2];

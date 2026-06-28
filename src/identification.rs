@@ -137,10 +137,8 @@ pub mod f
                     "nor"   => "nor",
                     "add"   => "add",
                     "sub"   => "sub",
-                    "sll"   => "sll",
-					"shiftl" => "sll",
-					"shiftr" => "srl",
-                    "srl"   => "srl",
+					"div" 	=> "div",
+					"mul" 	=> "mul",
                     _       => "ignored"
                 };
             }
